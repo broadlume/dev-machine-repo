@@ -9,8 +9,8 @@ append_to_zshrc() {
   local text="$1" zshrc
   local skip_new_line="${2:-0}"
 
-  if [ -w "$HOME/.zshrc.local" ]; then
-    zshrc="$HOME/.zshrc.local"
+  if [ -w "$HOME/.zshrc.dev-machine" ]; then
+    zshrc="$HOME/.zshrc.dev-machine"
   else
     zshrc="$HOME/.zshrc"
   fi

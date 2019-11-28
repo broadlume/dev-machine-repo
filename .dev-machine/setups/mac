@@ -15,6 +15,11 @@ if [ ! -f "$HOME/.zshrc" ]; then
   touch "$HOME/.zshrc"
 fi
 
+if [ ! -f "$HOME/.zshrc.dev-machine" ]; then
+  append_to_zshrc 'source "$HOME/.zshrc.dev-machine"'
+  touch "$HOME/.zshrc.dev-machine"
+fi
+
 # shellcheck disable=SC2016
 append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
 append_to_bash_profile 'export PATH="$HOME/.bin:$PATH"'
@@ -62,7 +67,7 @@ if ! command -v brew >/dev/null; then
     append_to_zshrc '# recommended by brew doctor'
 
     # shellcheck disable=SC2016
-    append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
+    append_to_zshrc 'export PATH="/usr///bin:$PATH"' 1
     append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"' 1
 
     export PATH="/usr/local/bin:$PATH"
