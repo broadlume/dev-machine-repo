@@ -1,5 +1,8 @@
-# Local config
+# local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # aliases
 [[ -f ~/.dev-machine/aliases ]] && source ~/.dev-machine/aliases
+
+# env
+[[ -f ~/.dev-machine/env ]] && source ~/.dev-machine/env
