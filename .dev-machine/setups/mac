@@ -1,50 +1,11 @@
 #!/bin/bash
 
-fancy_echo() {
-  local fmt="$1"; shift
+set -euo pipefail
+IFS=$'\n\t'
 
-  # shellcheck disable=SC2059
-  printf "\\n$fmt\\n" "$@"
-}
+source "$HOME/.dev-machine/setups/__utils.bash"
 
-append_to_zshrc() {
-  local text="$1" zshrc
-  local skip_new_line="${2:-0}"
-
-  if [ -w "$HOME/.zshrc.local" ]; then
-    zshrc="$HOME/.zshrc.local"
-  else
-    zshrc="$HOME/.zshrc"
-  fi
-
-  if ! grep -Fqs "$text" "$zshrc"; then
-    if [ "$skip_new_line" -eq 1 ]; then
-      printf "%s\\n" "$text" >> "$zshrc"
-    else
-      printf "\\n%s\\n" "$text" >> "$zshrc"
-    fi
-  fi
-}
-
-append_to_bash_profile() {
-  local text="$1" zshrc
-  local skip_new_line="${2:-0}"
-
-  bash_profile="$HOME/.bash_profile"
-
-  if ! grep -Fqs "$text" "$bash_profile"; then
-    if [ "$skip_new_line" -eq 1 ]; then
-      printf "%s\\n" "$text" >> "$bash_profile"
-    else
-      printf "\\n%s\\n" "$text" >> "$bash_profile"
-    fi
-  fi
-}
-
-# shellcheck disable=SC2154
-trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
-
-set -e
+fancy_echo "ℹ️ Setting up your Mac..."
 
 if [ ! -d "$HOME/.bin/" ]; then
   mkdir "$HOME/.bin"
@@ -92,14 +53,6 @@ case "$SHELL" in
     update_shell
     ;;
 esac
-
-gem_install_or_update() {
-  if gem list "$1" --installed > /dev/null; then
-    gem update "$@"
-  else
-    gem install "$@"
-  fi
-}
 
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
@@ -166,23 +119,12 @@ EOF
 brew services stop postgres
 brew services stop redis
 
-alias install_asdf_plugin=add_or_update_asdf_plugin
-add_or_update_asdf_plugin() {
-  local name="$1"
-  local url="$2"
-
-  if ! asdf plugin-list | grep -Fq "$name"; then
-    asdf plugin-add "$name" "$url"
-  else
-    asdf plugin-update "$name"
-  fi
-}
-
 fancy_echo "Removing old language version managers in favor of asdf..."
-brew remove rbenv || true
-brew remove ruby-build || true
-brew remove nodenv || true
-brew remove node-build || true
+quietly_run brew remove rbenv || true
+quietly_run brew remove ruby-build || true
+quietly_run brew remove nodenv || true
+quietly_run brew remove node-build || true
+
 if ! command -v brew >/dev/null; then
   rvm implode
 fi
@@ -198,37 +140,9 @@ append_to_zshrc 'source "$(brew --prefix asdf)/asdf.sh"'
 append_to_bash_profile 'source "$(brew --prefix asdf)/asdf.sh"' 
 # append_to_zshrc 'source $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash' 
 
-# shellcheck disable=SC1090
+set +u
 source "$(brew --prefix asdf)/asdf.sh"
-
-add_or_update_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
-add_or_update_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
-bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-add_or_update_asdf_plugin "yarn" "https://github.com/twuni/asdf-yarn"
-
-install_asdf_language() {
-  local language="$1"
-  local version
-  version="$(asdf list-all "$language" | grep -v "[a-z]" | tail -1)"
-
-  if ! asdf list "$language" | grep -Fq "$version"; then
-    asdf install "$language" "$version"
-    asdf global "$language" "$version"
-  fi
-}
-
-fancy_echo "Installing latest Ruby ..."
-install_asdf_language "ruby"
-# gem update --system
-number_of_cores=$(sysctl -n hw.ncpu)
-gem_install_or_update "bundler"
-bundle config --global jobs $((number_of_cores - 1))
-
-fancy_echo "Installing latest Node ..."
-install_asdf_language "nodejs"
-
-fancy_echo "Installing yarn..."
-install_asdf_language "yarn"
+set -u
 
 if [ -f "$HOME/.laptop.local" ]; then
   fancy_echo "Running your customizations from ~/.laptop.local ..."
@@ -243,16 +157,4 @@ append_to_bash_profile 'source "$(brew --prefix)/Caskroom/google-cloud-sdk/lates
 append_to_zshrc 'source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"'
 append_to_bash_profile 'source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"'
 
-# zprezto
-git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" || true
-pushd "${ZDOTDIR:-$HOME}/.zprezto"
-git pull --recurse-submodules
-ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogin" "${ZDOTDIR:-$HOME}/.zlogin" || true
-ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogout" "${ZDOTDIR:-$HOME}/.zlogout" || true
-ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zpreztorc" "${ZDOTDIR:-$HOME}/.zpreztorc" || true
-ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zprofile" "${ZDOTDIR:-$HOME}/.zprofile" || true
-ln -s "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshenv" "${ZDOTDIR:-$HOME}/.zshenv" || true
-# shellcheck disable=SC2016
-append_to_zshrc 'source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"'
-
-fancy_echo "Done! Please restart your shell :)"
+append_to_zshrc 'source "$HOME/.dev-machine/zshrc"'

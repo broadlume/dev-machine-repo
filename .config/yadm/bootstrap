@@ -3,6 +3,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
+
 system_type=$(uname -s)
 
 if [ "$system_type" = "Darwin" ]; then
@@ -10,3 +12,9 @@ if [ "$system_type" = "Darwin" ]; then
     sleep 1
     ~/.dev-machine/setups/mac
 fi
+
+ ~/.dev-machine/setups/zprezto
+ ~/.dev-machine/setups/ruby
+ ~/.dev-machine/setups/nodejs
+
+ echo "✅ Done! Please open a new terminal window for changes to take effect."

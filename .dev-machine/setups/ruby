@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+source "$HOME/.dev-machine/setups/__utils.bash"
+
+fancy_echo "ℹ️ Installing Ruby..."
+
+add_or_update_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
+install_asdf_language "ruby"
+gem_install_or_update "bundler"
+
+if [ "$(uname -s)" = "Darwin" ]; then
+    number_of_cores=$(sysctl -n hw.ncpu)
+    bundle config --global jobs "$((number_of_cores - 1))"
+fi
