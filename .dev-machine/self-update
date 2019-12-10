@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+source "$HOME/.dev-machine/setups/__utils.bash"
+
+if command -v yadm >/dev/null; then
+    quietly_run yadm pull || echo "WARNING: Could not update dev-machine"
+else
+    echo "ERROR: Could not update dev-machine (yadm not found)"
+fi
+
+version="$(cat $HOME/.dev-machine/version)"
+
+if ! grep -Fxq "$version" "$HOME/.dev-machine/installed-version"; then
+    echo "Updating dev-machine..."
+
+    sleep 2
+
+    if yadm bootstrap; then
+        echo "$version" > "$HOME/.dev-machine/installed-version"
+        echo "INFO: dev-machine update succeeded"
+    else
+        echo "ERROR: dev-machine pdate failed, please notify #p-dev-help with the logs"
+    fi
+fi
+
