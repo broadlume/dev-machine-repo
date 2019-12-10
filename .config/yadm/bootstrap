@@ -16,5 +16,7 @@ fi
  ~/.dev-machine/setups/zprezto
  ~/.dev-machine/setups/ruby
  ~/.dev-machine/setups/nodejs
+ ~/.dev-machine/setups/docker
+ ~/.dev-machine/setups/vscode
 
  echo "✅ Done! Please open a new terminal window for changes to take effect."

@@ -112,10 +112,8 @@ brew "redis", start_service: false, restart_service: false
 
 # Apps
 cask "gpg-suite", args: { force: true }
-cask 'visual-studio-code', args: { force: true }
 cask 'iterm2', args: { force: true }
 cask "google-cloud-sdk", args: { force: true }
-cask 'docker', args: { force: true }
 cask 'postman', args: { force: true }
 cask 'ngrok', args: { force: true }
 cask 'tuple', args: { force: true }

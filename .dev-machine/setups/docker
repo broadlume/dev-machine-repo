@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+source "$HOME/.dev-machine/setups/__utils.bash"
+
+if ! command -v docker >/dev/null && command -v brew > /dev/null; then
+    fancy_echo "ℹ️ Installing Docker..."
+    brew cask install --force docker
+    quietly_run open /Applications/Docker.app
+fi

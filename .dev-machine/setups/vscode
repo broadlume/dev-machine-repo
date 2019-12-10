@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+source "$HOME/.dev-machine/setups/__utils.bash"
+
+if ! command -v code >/dev/null && command -v brew > /dev/null; then
+    fancy_echo "ℹ️ Installing VSCode..."
+    brew cask install --force visual-studio-code
+fi
+
+if command -v code >/dev/null; then
+    fancy_echo "ℹ️ Installing VSCode extensions..."
+    code --install-extension "dbaeumer.vscode-eslint"
+    code --install-extension "esbenp.prettier-vscode"
+    code --install-extension "rebornix.ruby"
+    code --install-extension "orta.vscode-jest"
+    code --install-extension "GitHub.vscode-pull-request-github"
+    code --install-extension "apollographql.vscode-apollo"
+    code --install-extension "pmneo.tsimporter"
+    code --install-extension "will-wow.vscode-alternate-file"
+fi
