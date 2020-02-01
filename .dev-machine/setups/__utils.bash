@@ -28,7 +28,7 @@ append_to_bash_profile() {
   local text="$1" zshrc
   local skip_new_line="${2:-0}"
 
-  bash_profile="$HOME/.bash_profile"
+  bash_profile="$HOME/.bashrc"
 
   if ! grep -Fqs "$text" "$bash_profile"; then
     if [ "$skip_new_line" -eq 1 ]; then

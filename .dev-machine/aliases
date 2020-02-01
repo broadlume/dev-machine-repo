@@ -15,7 +15,7 @@ alias hc="bundle exec hanami console"
 # Git
 alias gco="git checkout"
 alias gs="git status"
-alias gpush="git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+alias gpush='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
