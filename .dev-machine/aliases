@@ -11,6 +11,7 @@ alias b="bundle"
 alias rs="rspec"
 alias hs="bundle exec hanami server"
 alias hc="bundle exec hanami console"
+alias rsd='bin/rspec $(git diff master --name-only --no-renames --diff-filter=AM spec/**/*_spec.rb)'
 
 # Git
 alias gco="git checkout"
