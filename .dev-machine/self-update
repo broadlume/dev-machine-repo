@@ -22,7 +22,7 @@ if ! grep -Fxq "$version" "$HOME/.dev-machine/installed-version"; then
         echo "$version" > "$HOME/.dev-machine/installed-version"
         echo "INFO: dev-machine update succeeded"
     else
-        echo "ERROR: dev-machine pdate failed, please notify #p-dev-help with the logs"
+        echo "ERROR: dev-machine update failed, please notify #p-dev-help with the logs"
     fi
 fi
 

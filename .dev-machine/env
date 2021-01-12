@@ -1,2 +1,6 @@
+# homebrew path
+export PATH="/usr/local/bin:$PATH"
+
+# vscode for default editor
 export VISUAL="code -w"
 export EDITOR="$VISUAL"

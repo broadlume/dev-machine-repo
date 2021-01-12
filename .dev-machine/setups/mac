@@ -67,10 +67,10 @@ if ! command -v brew >/dev/null; then
     append_to_zshrc '# recommended by brew doctor'
 
     # shellcheck disable=SC2016
-    append_to_zshrc 'export PATH="/usr///bin:$PATH"' 1
-    append_to_bash_profile 'export PATH="/usr/local/bin:$PATH"' 1
+    append_to_zshrc "export PATH=\"$(brew --prefix)/bin:$PATH\"" 1
+    append_to_bash_profile "export PATH=\"$(brew --prefix)/bin:$PATH\"" 1
 
-    export PATH="/usr/local/bin:$PATH"
+    export PATH="$(brew --prefix)/bin:$PATH"
 fi
 
 if brew list | grep -Fq brew-cask; then
