@@ -1,11 +1,5 @@
-# env
-[[ -f ~/.dev-machine/env ]] && source ~/.dev-machine/env
-
 # aliases
 [[ -f ~/.dev-machine/aliases ]] && source ~/.dev-machine/aliases
-
-# update
-[[ -f ~/.dev-machine/self-update ]] && sh ~/.dev-machine/self-update
 
 # local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

@@ -1,0 +1,5 @@
+# env
+[[ -f ~/.dev-machine/env ]] && source ~/.dev-machine/env
+
+# update
+[[ -f ~/.dev-machine/self-update ]] && sh ~/.dev-machine/self-update

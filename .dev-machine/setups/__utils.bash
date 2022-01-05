@@ -5,6 +5,25 @@ fancy_echo() {
   printf "\\n$fmt\\n" "$@"
 }
 
+append_to_zshenv() {
+  local text="$1" zshenv
+  local skip_new_line="${2:-0}"
+
+  if [ -w "$HOME/.zshenv.dev-machine" ]; then
+    zshenv="$HOME/.zshenv.dev-machine"
+  else
+    zshenv="$HOME/.zshenv"
+  fi
+
+  if ! grep -Fqs "$text" "$zshenv"; then
+    if [ "$skip_new_line" -eq 1 ]; then
+      printf "%s\\n" "$text" >> "$zshenv"
+    else
+      printf "\\n%s\\n" "$text" >> "$zshenv"
+    fi
+  fi
+}
+
 append_to_zshrc() {
   local text="$1" zshrc
   local skip_new_line="${2:-0}"
@@ -48,13 +67,21 @@ gem_install_or_update() {
 }
 
 add_or_update_asdf_plugin() {
+  source "$(brew --prefix asdf)/libexec/asdf.sh"
+
   local name="$1"
   local url="$2"
 
-  quietly_run asdf plugin-add "$name" "$url" || quietly_run asdf plugin-update "$name"
+  if ! $(asdf plugin list | grep -Fq "$name"); then
+    quietly_run asdf plugin-add "$name" "$url"
+  else
+    quietly_run asdf plugin-update "$name" || true
+  fi
 }
 
 install_asdf_language() {
+  source "$(brew --prefix asdf)/libexec/asdf.sh"
+
   local language="$1"
   local version="$2"
 
