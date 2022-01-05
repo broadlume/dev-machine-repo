@@ -51,15 +51,15 @@ add_or_update_asdf_plugin() {
   local name="$1"
   local url="$2"
 
-  asdf plugin-add "$name" "$url" || asdf plugin-update "$name"
+  quietly_run asdf plugin-add "$name" "$url" || quietly_run asdf plugin-update "$name"
 }
 
 install_asdf_language() {
   local language="$1"
-  local version
-  version="$(asdf list-all "$language" | grep -v "[a-z]" | tail -1)"
+  local version="$2"
 
   if ! asdf list "$language" | grep -Fq "$version"; then
+    fancy_echo "Installing $language $version"
     asdf install "$language" "$version"
     asdf global "$language" "$version"
   fi

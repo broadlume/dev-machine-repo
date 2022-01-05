@@ -7,17 +7,18 @@ source "$HOME/.dev-machine/setups/__utils.bash"
 
 if ! command -v code >/dev/null && command -v brew > /dev/null; then
     fancy_echo "ℹ️ Installing VSCode..."
-    brew cask install --force visual-studio-code
+    brew install --force --cask visual-studio-code
 fi
 
 if command -v code >/dev/null; then
     fancy_echo "ℹ️ Installing VSCode extensions..."
-    code --install-extension "dbaeumer.vscode-eslint"
-    code --install-extension "esbenp.prettier-vscode"
-    code --install-extension "rebornix.ruby"
-    code --install-extension "orta.vscode-jest"
-    code --install-extension "GitHub.vscode-pull-request-github"
-    code --install-extension "apollographql.vscode-apollo"
-    code --install-extension "pmneo.tsimporter"
-    code --install-extension "will-wow.vscode-alternate-file"
+    code --force --install-extension "dbaeumer.vscode-eslint" > /dev/null
+    code --force --install-extension "esbenp.prettier-vscode" > /dev/null
+    code --force --install-extension "rebornix.ruby" > /dev/null
+    code --force --install-extension "orta.vscode-jest" > /dev/null
+    code --force --install-extension "GitHub.vscode-pull-request-github" > /dev/null
+    code --force --install-extension "apollographql.vscode-apollo" > /dev/null
+    code --force --install-extension "pmneo.tsimporter" > /dev/null
+    code --force --install-extension "will-wow.vscode-alternate-file" > /dev/null
+    code --force --install-extension "GitHub.copilot" > /dev/null
 fi

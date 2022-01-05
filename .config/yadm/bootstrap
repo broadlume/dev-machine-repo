@@ -5,18 +5,14 @@ IFS=$'\n\t'
 
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
-system_type=$(uname -s)
+for script in $(find $HOME/.dev-machine/setups -perm "+111" -type f); do
+  echo "🏃‍♀️ Running setup script for $script"
 
-if [ "$system_type" = "Darwin" ]; then
-    echo "Setting up for Mac..."
-    sleep 1
-    ~/.dev-machine/setups/mac
-fi
+  if sh "$script"; then 
+    echo "👍 Successfully ran $script"
+  else
+    echo "⚠️ Error occurred when attempting to run $script"
+  fi
+done
 
- ~/.dev-machine/setups/zprezto
- ~/.dev-machine/setups/ruby
- ~/.dev-machine/setups/nodejs
- ~/.dev-machine/setups/docker
- ~/.dev-machine/setups/vscode
-
- echo "✅ Done! Please open a new terminal window for changes to take effect."
+echo "✅ Done! Please open a new terminal window for changes to take effect."

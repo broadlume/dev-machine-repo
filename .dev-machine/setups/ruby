@@ -8,8 +8,10 @@ source "$HOME/.dev-machine/setups/__utils.bash"
 fancy_echo "ℹ️ Installing Ruby..."
 
 add_or_update_asdf_plugin "ruby" "https://github.com/asdf-vm/asdf-ruby.git"
-install_asdf_language "ruby"
+install_asdf_language "ruby" "2.7.4"
 gem_install_or_update "bundler"
+
+[[ ! -f ~/.gemrc ]] && echo 'gem: --no-document' >> ~/.gemrc
 
 if [ "$(uname -s)" = "Darwin" ]; then
     number_of_cores=$(sysctl -n hw.ncpu)

@@ -18,11 +18,13 @@ if ! grep -Fxq "$version" "$HOME/.dev-machine/installed-version"; then
 
     sleep 2
 
+    chmod +x "$HOME/.config/yadm/bootstrap"
+
     if yadm bootstrap; then
         echo "$version" > "$HOME/.dev-machine/installed-version"
         echo "INFO: dev-machine update succeeded"
     else
-        echo "ERROR: dev-machine update failed, please notify #p-dev-help with the logs"
+        yadm upgrade && yadm bootstrap || echo "ERROR: dev-machine update failed, please notify #p-dev-help with the logs"
     fi
 fi
 

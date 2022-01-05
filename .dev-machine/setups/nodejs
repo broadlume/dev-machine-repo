@@ -8,11 +8,10 @@ source "$HOME/.dev-machine/setups/__utils.bash"
 fancy_echo "ℹ️ Installing Node.JS..."
 
 add_or_update_asdf_plugin "nodejs" "https://github.com/asdf-vm/asdf-nodejs.git"
-bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 add_or_update_asdf_plugin "yarn" "https://github.com/twuni/asdf-yarn"
 
 fancy_echo "Installing latest Node ..."
-install_asdf_language "nodejs"
+install_asdf_language "nodejs" "16.9.1"
 
 fancy_echo "Installing yarn..."
-install_asdf_language "yarn"
+install_asdf_language "yarn" "1.22.17"

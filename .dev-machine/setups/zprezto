@@ -5,7 +5,12 @@ IFS=$'\n\t'
 
 source "$HOME/.dev-machine/setups/__utils.bash"
 
-fancy_echo "ℹ️ Installing zprezto..."
+if [[ -d "${ZDOTDIR:-$HOME}/.zprezto" ]]; then
+  fancy_echo "⏭ Skipping zprezto installation..."
+  exit
+else
+  fancy_echo "ℹ️ Installing zprezto..."
+fi
 
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" || true
 pushd "${ZDOTDIR:-$HOME}/.zprezto"
