@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
+
+for script in $(find $HOME/.dev-machine/setups -perm "+111" -type f | sort); do
+  echo "🏃‍♀️ Running setup script for $script"
+
+  if bash "$script"; then 
+    echo "👍 Successfully ran $script"
+  else
+    echo "⚠️ Error occurred when attempting to run $script"
+  fi
+done
+
+echo "✅ Done! Please open a new terminal window for changes to take effect."
